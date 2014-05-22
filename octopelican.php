@@ -16,14 +16,15 @@ if (count($argv) < 2) {
   exit -1;
 }
 $filename = realpath($argv[1]);
-echo "Parsing " . $filename . " ...\n";
-
 $content = file_get_contents($filename);
 
 $parts = explode('---', $content);
 
-$header = explode("\n", $parts[1]);
-$body = $parts[2];
+$tokens = count($parts);
+
+$header = explode("\n", $parts[$tokens - 2]);
+$body = $parts[$tokens - 1];
+
 $newHeader = "";
 
 foreach ($header as $headline) {
