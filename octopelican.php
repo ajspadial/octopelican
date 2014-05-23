@@ -15,27 +15,30 @@ if (count($argv) < 2) {
   echo "Too few params. Need a file name to apply changes.";
   exit -1;
 }
-$filename = realpath($argv[1]);
-$content = file_get_contents($filename);
 
-$parts = explode('---', $content);
+$filenames = array_slice($argv, 1);
 
-$tokens = count($parts);
+foreach ($filenames as $target) {
+	$filename = realpath($target);
+	$content = file_get_contents($filename);
 
-$header = explode("\n", $parts[$tokens - 2]);
-$body = $parts[$tokens - 1];
+	$parts = explode('---', $content);
 
-$newHeader = "";
+	$tokens = count($parts);
 
-foreach ($header as $headline) {
-	$newHeader .= rewriteHeader($headline, 'title:', 'Title:');
-	$newHeader .= rewriteHeader($headline, 'date:', 'Date:');
-	$newHeader .= rewriteHeader($headline, 'categories:', 'Tags:');
+	$header = explode("\n", $parts[$tokens - 2]);
+	$body = $parts[$tokens - 1];
+
+	$newHeader = "";
+
+	foreach ($header as $headline) {
+		$newHeader .= rewriteHeader($headline, 'Title:', 'Title:');
+		$newHeader .= rewriteHeader($headline, 'date:', 'Date:');
+		$newHeader .= rewriteHeader($headline, 'categories:', 'Tags:');
+	}
+
+	$newHeader .= "Category: Blog\n";
+	$newHeader .= "Author: Antonio Jesus Sanchez Padial\n";
+
+	file_put_contents($filename, $newHeader . $body);
 }
-
-$newHeader .= "Category: Blog\n";
-$newHeader .= "Author: Antonio Jesus Sanchez Padial\n";
-
-echo $newHeader . $body;
-
-
