@@ -32,7 +32,7 @@ foreach ($filenames as $target) {
 	$newHeader = "";
 
 	foreach ($header as $headline) {
-		$newHeader .= rewriteHeader($headline, 'Title:', 'Title:');
+		$newHeader .= rewriteHeader($headline, 'title:', 'Title:');
 		$newHeader .= rewriteHeader($headline, 'date:', 'Date:');
 		$newHeader .= rewriteHeader($headline, 'categories:', 'Tags:');
 	}
